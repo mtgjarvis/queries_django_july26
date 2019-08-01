@@ -1,0 +1,1 @@
+# queries_django_july26
