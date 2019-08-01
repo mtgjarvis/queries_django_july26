@@ -1,0 +1,51 @@
+Find the albums recorded by the artist Queen.
+	
+Album.objects.filter(artist__name='Queen')
+<QuerySet [<Album: Album object (32)>, <Album: Album object (181)>, 			<Album: Album 	object (182)>]>
+
+
+Count how many tracks belong to the media type "Protected MPEG-4 video file".
+
+Track.objects.filter(media_type__name='Protected MPEG-4 video file').count()
+214
+
+Find the genre with the name "Hip Hop/Rap".
+
+Genre.objects.get(name='Hip Hop/Rap')
+<Genre: Genre object (17)>
+
+Count how many tracks belong to the "Hip Hop/Rap" genre
+
+Track.objects.filter(genre__name='Hip Hop/Rap').count()
+35
+
+Find the total amount of time required to listen to all the tracks in the database.
+
+Track.objects.aggregate(Sum('milliseconds'))
+{'milliseconds__sum': 1377942652}
+
+Find the highest price of any track that has the media type "MPEG audio file".
+
+Track.objects.filter(media_type__name='MPEG audio file').aggregate(Max('unit_price'))
+{'unit_price__max': Decimal('0.99')}
+
+Find the name of the most expensive track that has the media type "MPEG audio file".
+
+Track.objects.filter(unit_price=(Track.objects.filter(media_type__name='MPEG audio file').aggregate(Max('unit_price'))['unit_price__max']))[0].name
+'Restless and Wild'
+
+Find the 2 oldest artists.
+
+Artist.objects.order_by('created_at')[0].created_at
+datetime.datetime(2004, 2, 13, 6, 8, 36, 466000, tzinfo=<UTC>)
+>>> Artist.objects.order_by('created_at')[1].created_at
+datetime.datetime(2004, 2, 16, 22, 4, 39, 138000, tzinfo=<UTC>
+
+Find the least expensive track that has the genre "Electronica/Dance".
+
+Track.objects.filter(unit_price=(Track.objects.filter(media_type__name='MPEG audio file').aggregate(Min('unit_price'))['unit_price__min']))[0]
+<Track: Track object (4)>
+
+Find all "MPEG audio file" tracks in the genre "Electronica/Dance".
+
+Track.objects.filter(media_type__name='MPEG audio file').filter(genre__name='Electronica/Dance')
